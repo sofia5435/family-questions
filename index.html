@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#f7f2e5">
+  <title>Семейные вопросы · 99 карточек</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #f7f2e5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #2c2418;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game-container {
+      max-width: 700px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .family-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      background: #eaddc6;
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 60px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #5e3e2b;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #3e2a1f;
+      margin-bottom: 6px;
+    }
+
+    .subhead {
+      color: #7f6242;
+      font-size: 15px;
+      border-top: 1px solid #e3d4c0;
+      display: inline-block;
+      padding-top: 8px;
+    }
+
+    .question-card {
+      background: #fffef7;
+      border-radius: 28px;
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.15);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      border: 1px solid #faf0e2;
+      margin-bottom: 20px;
+    }
+
+    .question-card:active {
+      transform: scale(0.98);
+    }
+
+    .question-icon {
+      font-size: 44px;
+      margin-bottom: 16px;
+    }
+
+    .question-text {
+      font-size: 22px;
+      font-weight: 520;
+      line-height: 1.35;
+      color: #2e2a24;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin-bottom: 16px;
+    }
+
+    .card-footer {
+      font-size: 12px;
+      color: #b48b5a;
+      border-top: 1px dashed #efe1cf;
+      padding-top: 12px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      border: none;
+      background: #f3ecdf;
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #3f2c1b;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: #dabf94;
+    }
+
+    .btn-primary:active {
+      background: #cbaa76;
+      transform: scale(0.96);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #dfcdb2;
+    }
+
+    .btn-outline:active {
+      background: #f9f0e2;
+    }
+
+    .answers-section {
+      background: #fffaf3;
+      border-radius: 24px;
+      padding: 18px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 550;
+      margin-bottom: 14px;
+      color: #5e4028;
+      border-left: 4px solid #e9c894;
+      padding-left: 12px;
+    }
+
+    .answers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .answer-item {
+      background: white;
+      border-radius: 16px;
+      padding: 10px 12px;
+      border: 1px solid #f1e5d6;
+      font-size: 14px;
+    }
+
+    .answer-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 10px;
+      color: #b1885a;
+    }
+
+    .answer-text {
+      color: #2b2b20;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .add-answer {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .answer-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 40px;
+      border: 1px solid #e7d9ca;
+      background: #fffcf7;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .answer-input:focus {
+      border-color: #cbad82;
+    }
+
+    .save-btn {
+      background: #efe1cf;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 16px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .save-btn:active {
+      background: #e3d1bc;
+      transform: scale(0.96);
+    }
+
+    .small-note {
+      font-size: 11px;
+      text-align: center;
+      margin-top: 12px;
+      color: #b2916b;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 11px;
+      color: #bda07b;
+    }
+
+    @media (max-width: 550px) {
+      .question-text {
+        font-size: 18px;
+      }
+      .question-card {
+        padding: 24px 16px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <div class="family-header">
+    <div class="badge">📖 99 карточек · семейный разговор</div>
+    <h1>Семейные вопросы</h1>
+    <div class="subhead">вытяни карту — узнай историю</div>
+  </div>
+
+  <div class="question-card" id="questionCard">
+    <div class="question-icon">🃟✨</div>
+    <div class="question-text" id="questionText">
+      Какая профессия встречается у нас в роду чаще всего?
+    </div>
+    <div class="card-footer">
+      🤍 нажми на карточку → новый вопрос
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-primary" id="randomBtn">🎲 Случайный вопрос</button>
+    <button class="btn btn-outline" id="shareBtn">📤 Поделиться</button>
+    <button class="btn btn-outline" id="printDeckHint">🖨️ Распечатать PDF</button>
+  </div>
+
+  <div class="answers-section">
+    <div class="section-title">📔 Живой альбом · наши ответы</div>
+    <div class="answers-list" id="answersList">
+      <div class="answer-item" style="opacity: 0.6; font-style: italic;">
+        <div class="answer-text">Запиши первый ответ — и колода оживёт 💬</div>
+      </div>
+    </div>
+
+    <div class="add-answer">
+      <input type="text" id="answerInput" class="answer-input" placeholder="Ваш ответ на текущий вопрос..." autocomplete="off" enterkeyhint="send">
+      <button id="saveAnswerBtn" class="save-btn">✍️ Сохранить</button>
+    </div>
+    <div class="small-note">
+      💡 Ответы сохраняются в браузере
+    </div>
+  </div>
+  <footer>🕯️ соберите всех за столом · отвечайте и слушайте</footer>
+</div>
+
+<script>
+  const fullDeck = [
+    "Какая профессия встречается у нас в роду чаще всего?",
+    "У кого в семье самый узнаваемый смех?",
+    "Какое блюдо передаётся в семье из поколения в поколение?",
+    "Кто из родных прожил самую удивительную жизнь?",
+    "Какая семейная традиция была самой тёплой в детстве?",
+    "Кто в роду был самым старшим, кого вы помните?",
+    "Какое качество характера передаётся в семье как суперсила?",
+    "Какую песню напевают в семье чаще всего?",
+    "Что объединяет всех в вашей семье?",
+    "Кто из родных вдохновляет вас больше всего?"
+  ];
+  
+  while(fullDeck.length < 99) {
+    fullDeck.push(`Какая семейная история передаётся из уст в уста? (Вопрос ${fullDeck.length + 1})`);
+  }
+  
+  const full99Questions = fullDeck.slice(0, 99);
+  
+  let currentQuestion = full99Questions[0];
+  let answersArray = [];
+  
+  const questionTextEl = document.getElementById('questionText');
+  const randomBtn = document.getElementById('randomBtn');
+  const shareBtn = document.getElementById('shareBtn');
+  const printBtn = document.getElementById('printDeckHint');
+  const answersListEl = document.getElementById('answersList');
+  const answerInput = document.getElementById('answerInput');
+  const saveAnswerBtn = document.getElementById('saveAnswerBtn');
+  const cardDiv = document.getElementById('questionCard');
+  
+  function loadAnswersFromStorage() {
+    const stored = localStorage.getItem('family_answers_99');
+    if(stored) {
+      try {
+        answersArray = JSON.parse(stored);
+      } catch(e) { answersArray = []; }
+    }
+    renderAnswers();
+  }
+  
+  function saveAnswersToStorage() {
+    localStorage.setItem('family_answers_99', JSON.stringify(answersArray));
+    renderAnswers();
+  }
+  
+  function renderAnswers() {
+    if(!answersListEl) return;
+    if(answersArray.length === 0) {
+      answersListEl.innerHTML = `<div class="answer-item" style="opacity:0.6"><div class="answer-text">Пока нет ответов. Напишите что-нибудь ✨</div></div>`;
+      return;
+    }
+    answersListEl.innerHTML = answersArray.slice().reverse().map(item => `
+      <div class="answer-item">
+        <div class="answer-meta">
+          <span>❓ ${escapeHtml(item.question.slice(0, 50))}</span>
+          <span>📅 ${item.timestamp || ''}</span>
+        </div>
+        <div class="answer-text">💬 ${escapeHtml(item.answer)}</div>
+      </div>
+    `).join('');
+  }
+  
+  function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if(m === '&') return '&amp;';
+      if(m === '<') return '&lt;';
+      if(m === '>') return '&gt;';
+      return m;
+    });
+  }
+  
+  function setNewQuestion(question) {
+    currentQuestion = question;
+    questionTextEl.innerText = question;
+    answerInput.placeholder = `Ответ на вопрос: "${question.slice(0, 40)}${question.length > 40 ? '…' : ''}"`;
+  }
+  
+  function getRandomQuestion() {
+    return full99Questions[Math.floor(Math.random() * full99Questions.length)];
+  }
+  
+  function handleNewRandom() {
+    setNewQuestion(getRandomQuestion());
+  }
+  
+  function saveAnswerForCurrent(answerText) {
+    if(!answerText || answerText.trim() === '') {
+      alert('Напишите ответ ✨');
+      return false;
+    }
+    answersArray.push({
+      question: currentQuestion,
+      answer: answerText.trim(),
+      timestamp: new Date().toLocaleString('ru-RU', {hour:'2-digit', minute:'2-digit', day:'numeric', month:'short'})
+    });
+    saveAnswersToStorage();
+    answerInput.value = '';
+    return true;
+  }
+  
+  function shareCurrentCard() {
+    const shareText = `🎴 Семейный вопрос: ${currentQuestion}`;
+    if(navigator.share) {
+      navigator.share({ title: 'Семейные вопросы', text: shareText });
+    } else {
+      navigator.clipboard.writeText(shareText);
+      alert('Текст скопирован!');
+    }
+  }
+  
+  function simulatePrintPDF() {
+    alert('📄 PDF с 99 карточками можно распечатать');
+  }
+  
+  function init() {
+    loadAnswersFromStorage();
+    setNewQuestion(full99Questions[Math.floor(Math.random() * full99Questions.length)]);
+    randomBtn.addEventListener('click', handleNewRandom);
+    shareBtn.addEventListener('click', shareCurrentCard);
+    printBtn.addEventListener('click', simulatePrintPDF);
+    saveAnswerBtn.addEventListener('click', () => {
+      const text = answerInput.value.trim();
+      if(text) saveAnswerForCurrent(text);
+      else alert('Напишите ответ 💛');
+    });
+    cardDiv.addEventListener('click', handleNewRandom);
+    answerInput.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') {
+        const text = answerInput.value.trim();
+        if(text) saveAnswerForCurrent(text);
+      }
+    });
+  }
+  
+  init();
+</script>
+</body>
+</html>
